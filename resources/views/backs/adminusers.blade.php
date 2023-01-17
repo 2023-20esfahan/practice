@@ -15,8 +15,13 @@
 @foreach($users as $user)
 </div>
 {{$user->id}} , 
+<br>
+
 {{$user->email}} 
 <br>
+{{$user->permissions}}
+<br>
+
 </div>
 @endforeach
 
