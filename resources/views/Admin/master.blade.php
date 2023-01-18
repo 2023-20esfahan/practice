@@ -13,7 +13,7 @@
     <link rel="shortcut icon" type="image/x-icon"
           href="https://limoostudio.com/rtl-theme/assets/images/brand/favicon.ico"/>
 
-    <title>مرغ داری </title>
+    <title>تست</title>
 
     <link href="{{asset('/backend/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('/backend/fonts/iran-yekan.css')}}" rel="stylesheet"/>
