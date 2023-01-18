@@ -19,8 +19,9 @@
 
 {{$user->email}} 
 <br>
-{{$user->permissions}}
+{{$user->permission}}
 <br>
+{{$user->role}}
 
 </div>
 @endforeach
