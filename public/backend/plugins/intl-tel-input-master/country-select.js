@@ -1,0 +1,1 @@
+var input=document.querySelector("#phone");window.intlTelInput(input,{utilsScript:"../assets/plugins/intl-tel-input-master/utils.js",});
