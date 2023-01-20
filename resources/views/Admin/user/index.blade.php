@@ -8,15 +8,15 @@
             <div class="page-header">
                 <h1 class="page-title"> لیست کاربران</h1>
 
-@include('admin.user.messages')                <div>
+@include('Admin.user.messages')                <div>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="javascript:void(0)">صفحه اصلی</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"> 
-                            
+                        <li class="breadcrumb-item active" aria-current="page">
+
                         لیست کاربران</li>
                     </ol>
                 </div>
-                
+
             </div>
             @if ($users->count() == 0)
                     <p>
@@ -44,10 +44,10 @@
         <div class="d-flex">
       <a class=" m-1 btn btn-success" href="{{route('users.show',$user->id)}}" role="submit">
                                         مشاهده
-                                    </a> 
+                                    </a>
                                     <form action="{{ route('users.destroy', $user) }}" method="POST">{{ method_field('DELETE') }}
     {{ csrf_field() }}    <button class=" m-1 btn btn-danger" onclick="return confirm('آیا از حذف کاربر اطمینان دارید؟');">حذف</button>
-</form>                                        
+</form>
                                     <a class=" m-1 btn btn-warning" href="{{route('users.edit', $user->id)}}" role="submit">
                                         ویرایش
                                     </a>
