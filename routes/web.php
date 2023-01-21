@@ -4,7 +4,7 @@ use App\Http\Controllers\Admin\Web\CommodityController;
 use App\Http\Controllers\Admin\Web\RemittanceController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\Web\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,7 +23,7 @@ Route::get('/', function () {
 // Route::post('/user', [PostController::class, 'store'])->name('user.store');
 // Route::post('/user', [PostController::class, 'show'])->name('user.show');
 // Route::post('/user', [PostController::class, 'delete'])->name('user.delete');
-Route::resource('users', UserController::class);
+Route::resource('users', App\Http\Controllers\Admin\Web\UserController::class );
 
 Auth::routes();
 

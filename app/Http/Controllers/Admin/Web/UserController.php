@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin\Web;
 
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\StorUserRequest;
 
 class UserController extends Controller
 {
@@ -40,33 +42,11 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return RedirectResponse
+ *      * @return RedirectResponse
      */
-    public function store(Request $request, User $user)
+    public function store(StorUserRequest $request, User $user)
     {
-
-
-        $messages = ['name.required' => 'وارد کردن نام کاربری الزامی است',
-            'name.max' => 'حداکثر 50 کلمه مجاز است',
-            'email.required' => 'وارد کردن ایمیل ضروری است',
-            'password.required' => 'وارد کردن پسورد ضروری است',
-            'password.letters' => 'پسورد باید شامل حروف باشد',
-            'password.mixed' => 'پسورد باید شامل حروف کوچک و بزرگ باشد',
-            'password.numbers' => 'پسورد باید شامل عداد باشد',
-            'password.symbols' => 'پسورد باید شامل نمادهای خاص',
-
-        ];
-
-        $validated = $request->validate([
-            'name' => 'required|unique:users|max:50',
-            'email' => ['required'],
-            'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(),
-            ]
-
-
-        ], $messages);
-
+        $validated = $request->validated();
         $user = new User(['name' => $request->get('name'), 'email' => $request->get('email'), 'password' => $request->get('password')]);
         try {
             $user->save();
@@ -106,32 +86,16 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+ *  \App\Http\Requests\UpdateUserRequest  $request
+ *      * @return RedirectResponse
      * @param User $user
+    
+
      * @return RedirectResponse
      */
-    public function update(Request $request, User $user): RedirectResponse
+    public function update(UpdateUserRequest $request, User $user): RedirectResponse
     {
-        $messages = ['name.required' => 'وارد کردن نام کاربری الزامی است',
-            'name.max' => 'حداکثر 50 کلمه مجاز است',
-            'email.required' => 'وارد کردن ایمیل ضروری است',
-            'password.required' => 'وارد کردن پسورد ضروری است',
-            'password.letters' => 'پسورد باید شامل حروف باشد',
-            'password.mixed' => 'پسورد باید شامل حروف کوچک و بزرگ باشد',
-            'password.numbers' => 'پسورد باید شامل عداد باشد',
-            'password.symbols' => 'پسورد باید شامل نمادهای خاص',
-
-        ];
-
-        $validated = $request->validate([
-            'name' => 'required|unique:users|max:50',
-            'email' => ['required'],
-            'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(),
-            ]
-
-
-        ], $messages);
-
+      $validated = $request->validated();
         try {
             $name = "";
             $email = "";
