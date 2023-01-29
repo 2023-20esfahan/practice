@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('remittances', function (Blueprint $table) {
-            $table->enum('type',['1', '2', '3', '4', '5'])->default('1')->after('freight_pic');
-            $table->string('date')->nullable()->after('description');
+        Schema::table('users', function (Blueprint $table) {
+            $table->json('image');
+
         });
     }
 
@@ -26,8 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('remittances', function (Blueprint $table) {
-            $table->dropColumn('type');
+        Schema::table('users', function (Blueprint $table) {
+//
         });
     }
 };
