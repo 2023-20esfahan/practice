@@ -32,13 +32,13 @@ class StorUserRequest extends FormRequest
         //     $id = $this->user->id;
         // }
         return [
-            
-            'name' => ['required','max:50', Rule::unique('users')],
+
+            'name' => ['required', 'max:50', Rule::unique('users')],
             'email' => ['required'],
             'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(),],
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
 
-            
+
         ];
     }
 
@@ -68,7 +68,7 @@ protected $stopOnFirstFailure = true;
  *
  * @var string
  */
-// protected $redirectRoute = 'users.create';  
+// protected $redirectRoute = 'users.create';
 
 /**
  * Get the error messages for the defined validation rules.

@@ -11,10 +11,13 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rules\Password;
-use  Image;
+use  Intervention\Image\Facades\Image;
+
 class UserController extends Controller
 {
     /**
@@ -52,20 +55,27 @@ class UserController extends Controller
             $data = "";
 
         } else {
-            $data['image'] = $request->file('image')->store('image', 'public');
-            $img = Image::make($request->file('image'));
+            $image = $request->file('image');
+            $destinationPath = public_path('/uploads');
+            $imgFile = Image::make($image->getRealPath());
+
+
             $array = [100, 200, 300, 400, 500];
 
-
-            foreach($array as $i){
-                $img =  $img->resize($i, $i);
-                $data[$i] = $img;
-
-    
+            $images = [];
+            foreach ($array as $i) {
+                $input['file'] = $i . ' ' . time() . '.' . $image->getClientOriginalExtension();
+                $imgFile->resize($i, $i, function ($const) {
+                    $const->aspectRatio();
+                })->save($destinationPath . '/' . $input['file']);
+                $input['file'] = $i . ' ' . time() . '.' . $image->getClientOriginalExtension();
+                $url = URL::to( $destinationPath . '/' . $input['file']);
+                $images[] = $url;
             }
+            $data['image'] = $images;
         }
         $user = new User(['name' => $request->get('name'), 'email' => $request->get('email'),
-            'password' => $request->get('password'), 'image'=>json_encode($data)]);
+            'password' => $request->get('password'), 'image' => json_encode($data)]);
         try {
             $user->save();
             return redirect()->route('users.index')->with('success', 'کاربر با موفقیت ایجاد شد');
@@ -84,7 +94,7 @@ class UserController extends Controller
      * @param User $user
      * @return Application|Factory|View
      */
-    public function show(Request $request, User $user): Application | Factory | View
+    public function show(Request $request, User $user): Application|Factory|View
     {
         return view('Admin.user.show')->with('user', $user);
 
@@ -97,7 +107,7 @@ class UserController extends Controller
      * @param User $user
      * @return Application|Factory|View
      */
-    public function edit(Request $request, User $user): View | Factory | Application
+    public function edit(Request $request, User $user): View|Factory|Application
     {
         return view('Admin.user.edit')->with('user', $user);
     }
@@ -106,10 +116,8 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      *  \App\Http\Requests\UpdateUserRequest  $request
-     *      * @return RedirectResponse
-     * @param User $user
-
-
+     *      * @param User $user
+     * @return RedirectResponse
      * @return RedirectResponse
      */
     public function update(UpdateUserRequest $request, User $user): RedirectResponse

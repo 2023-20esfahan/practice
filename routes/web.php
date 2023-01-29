@@ -16,7 +16,7 @@ use App\Http\Controllers\Admin\Web\UserController;
 |
 */
 Route::get('/', function () {
-    return view('Admin.user.master');
+    return view('Admin.master');
 });
 // Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
 // Route::get('/user/create', [PostController::class, 'create'])->name('users.create');
