@@ -35,7 +35,8 @@ class StorUserRequest extends FormRequest
             
             'name' => ['required','max:50', Rule::unique('users')],
             'email' => ['required'],
-            'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(),]
+            'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(),],
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
 
             
         ];

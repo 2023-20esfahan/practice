@@ -30,6 +30,7 @@
       <th scope="col">آیدی کاربری</th>
       <th scope="col">نام کاربری</th>
       <th scope="col">ایمیل</th>
+      <th scope="col">عکس</th>
       <th scope="col">مدیریت کاربر</th>
     </tr>
   </thead>
@@ -40,6 +41,8 @@
       <th >{{$user->id}}</th>
       <td>{{$user->name}}</td>
       <td>{{$user->email}}</td>
+      <!-- <td><img src="{{ Storage::url($user->images) }}" alt="" class="img-fluid  w-20"> </td> -->
+<td>{{$user->image}}</td>
       <td>
         <div class="d-flex">
       <a class=" m-1 btn btn-success" href="{{route('users.show',$user->id)}}" role="submit">

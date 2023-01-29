@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Admin\Web;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StorUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\Password;
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Http\Requests\UpdateUserRequest;
-use App\Http\Requests\StorUserRequest;
-
+use Illuminate\Http\Response;
+use Illuminate\Validation\Rules\Password;
+use  Image;
 class UserController extends Controller
 {
     /**
@@ -42,12 +42,30 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
- *      * @return RedirectResponse
+     *      * @return RedirectResponse
      */
     public function store(StorUserRequest $request, User $user)
     {
         $validated = $request->validated();
-        $user = new User(['name' => $request->get('name'), 'email' => $request->get('email'), 'password' => $request->get('password')]);
+
+        if ($request->file('image') == null) {
+            $data = "";
+
+        } else {
+            $data['image'] = $request->file('image')->store('image', 'public');
+            $img = Image::make($request->file('image'));
+            $array = [100, 200, 300, 400, 500];
+
+
+            foreach($array as $i){
+                $img =  $img->resize($i, $i);
+                $data[$i] = $img;
+
+    
+            }
+        }
+        $user = new User(['name' => $request->get('name'), 'email' => $request->get('email'),
+            'password' => $request->get('password'), 'image'=>json_encode($data)]);
         try {
             $user->save();
             return redirect()->route('users.index')->with('success', 'کاربر با موفقیت ایجاد شد');
@@ -56,6 +74,7 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('warning', 'ذخیره اطلاعات موفقیت امیز نبود. دوباره سعی کنید   ');
 
         }
+
     }
 
     /**
@@ -65,7 +84,7 @@ class UserController extends Controller
      * @param User $user
      * @return Application|Factory|View
      */
-    public function show(Request $request, User $user): Application|Factory|View
+    public function show(Request $request, User $user): Application | Factory | View
     {
         return view('Admin.user.show')->with('user', $user);
 
@@ -78,7 +97,7 @@ class UserController extends Controller
      * @param User $user
      * @return Application|Factory|View
      */
-    public function edit(Request $request, User $user): View|Factory|Application
+    public function edit(Request $request, User $user): View | Factory | Application
     {
         return view('Admin.user.edit')->with('user', $user);
     }
@@ -86,16 +105,16 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
- *  \App\Http\Requests\UpdateUserRequest  $request
- *      * @return RedirectResponse
+     *  \App\Http\Requests\UpdateUserRequest  $request
+     *      * @return RedirectResponse
      * @param User $user
-    
+
 
      * @return RedirectResponse
      */
     public function update(UpdateUserRequest $request, User $user): RedirectResponse
     {
-      $validated = $request->validated();
+        $validated = $request->validated();
         try {
             $name = "";
             $email = "";

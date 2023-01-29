@@ -24,6 +24,7 @@
       <th scope="col">آیدی کاربری</th>
       <th scope="col">نام کاربری</th>
       <th scope="col">ایمیل</th>
+      <th scope="col">عکس</th>
     </tr>
   </thead>
   <tbody>
@@ -32,6 +33,7 @@
       <th >{{$user->id}}</th>
       <td>{{$user->name}}</td>
       <td>{{$user->email}}</td>
+      <td><img src="{{ Storage::url($user->image) }}" alt="" class="img-fluid  w-20"> </td>
 
     </tr>
         </div>
