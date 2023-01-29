@@ -56,6 +56,7 @@ class UserController extends Controller
 
         } else {
             $image = $request->file('image');
+            //*****please make uploads directory in your public folder ******
             $destinationPath = public_path('/uploads');
             $imgFile = Image::make($image->getRealPath());
 
