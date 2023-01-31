@@ -36,13 +36,11 @@
   </thead>
   <tbody>
   @foreach($users as $user)
-
-    <tr>
+      <tr>
       <th >{{$user->id}}</th>
       <td>{{$user->name}}</td>
       <td>{{$user->email}}</td>
-      <!-- <td><img src="{{ Storage::url($user->images) }}" alt="" class="img-fluid  w-20"> </td> -->
-<td>{{$user->image}}</td>
+       <td><img src="{{ $user->image[0] }}" alt="" class="img-fluid  w-20"> </td>
       <td>
         <div class="d-flex">
       <a class=" m-1 btn btn-success" href="{{route('users.show',$user->id)}}" role="submit">

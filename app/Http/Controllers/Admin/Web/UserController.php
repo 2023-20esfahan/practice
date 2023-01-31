@@ -17,6 +17,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rules\Password;
 use  Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -65,18 +66,19 @@ class UserController extends Controller
 
             $images = [];
             foreach ($array as $i) {
-                $input['file'] = $i . ' ' . time() . '.' . $image->getClientOriginalExtension();
+                $input['file'] = "$i-" . time() . '.' . $image->getClientOriginalExtension();
                 $imgFile->resize($i, $i, function ($const) {
                     $const->aspectRatio();
                 })->save($destinationPath . '/' . $input['file']);
-                $input['file'] = $i . ' ' . time() . '.' . $image->getClientOriginalExtension();
-                $url = URL::to( $destinationPath . '/' . $input['file']);
+                $input['file'] = "$i-" . time() . '.' . $image->getClientOriginalExtension();
+                $url = URL::to('uploads/' . $input['file']);
                 $images[] = $url;
             }
-            $data['image'] = $images;
+            $data = $images;
         }
+
         $user = new User(['name' => $request->get('name'), 'email' => $request->get('email'),
-            'password' => $request->get('password'), 'image' => json_encode($data)]);
+            'password' => $request->get('password'), 'image' => $data]);
         try {
             $user->save();
             return redirect()->route('users.index')->with('success', 'کاربر با موفقیت ایجاد شد');
