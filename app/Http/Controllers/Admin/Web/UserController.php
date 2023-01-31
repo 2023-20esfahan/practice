@@ -58,7 +58,7 @@ class UserController extends Controller
             $image = $request->file('image');
             //*****please make uploads directory in your public folder ******
             $destinationPath = public_path('/uploads');
-            $imgFile = Image::make($image->getRealPath());
+            $data = Image::make($image->getRealPath());
 
 
             $array = [100, 200, 300, 400, 500];
@@ -66,12 +66,14 @@ class UserController extends Controller
             $images = [];
             foreach ($array as $i) {
                 $input['file'] = $i . ' ' . time() . '.' . $image->getClientOriginalExtension();
-                $imgFile->resize($i, $i, function ($const) {
+                 $imgFile->resize($i, $i, function ($const) {
                     $const->aspectRatio();
                 })->save($destinationPath . '/' . $input['file']);
                 $input['file'] = $i . ' ' . time() . '.' . $image->getClientOriginalExtension();
                 $url = URL::to( $destinationPath . '/' . $input['file']);
+
                 $images[] = $url;
+
             }
             $data['image'] = $images;
         }
@@ -82,7 +84,9 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('success', 'کاربر با موفقیت ایجاد شد');
 
         } catch (Exception $exception) {
-            return redirect()->route('users.index')->with('warning', 'ذخیره اطلاعات موفقیت امیز نبود. دوباره سعی کنید   ');
+            dd($exception);
+            $message = $exception->getMessage();
+            return redirect()->route('users.index')->with('warning', $message);
 
         }
 
