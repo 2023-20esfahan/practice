@@ -30,6 +30,11 @@
 
     <link rel="stylesheet" id="fonts" href="#">
     <link href="{{asset('/backend/css/rtl.css')}}" rel="stylesheet"/>
+
+link for ckeditor
+    <link rel="stylesheet" href="{{asset('/frontend/ckeditor/sample/toolbarconfigurator/lib/codemirror/neo.css')}}">
+	<link rel="stylesheet" href="{{asset('/frontend/css/samples.css')}}">
+
     <!-- MAIN CSS -->
     @yield('style')
 </head>
@@ -681,9 +686,33 @@
 <script src="{{asset('/backend/plugins/fancyuploder/jquery.iframe-transport.js')}}"></script>
 <script src="{{asset('/backend/plugins/fancyuploder/jquery.fancy-fileupload.js')}}"></script>
 <script src="{{asset('/backend/plugins/fancyuploder/fancy-uploader.js')}}"></script>
+<script src="{{asset('/frontend/ckeditor/ckeditor.js')}}"></script>
+<script src="{{asset('/frontend/ckeditor/samples/js/samples.js')}}"></script>
+<script>
+                CKEDITOR.replace( 'editor' ,{
+                filebrowserUploadUrl: "/frontend/ckeditor/upload/upload.php" ;
+                filebrowserBrowseUrl = '/frontend/ckfinder/browse.php?opener=ckeditor&type=files';
+			filebrowserImageBrowseUrl = '/frontend/ckfinder/php?opener=ckeditor&type=images';
+			filebrowserFlashBrowseUrl = '/frontend/ckfinder/browse.php?opener=ckeditor&type=flash';
+			filebrowserUploadUrl = '/frontend/ckfinder/upload.php?opener=ckeditor&type=files';
+			filebrowserImageUploadUrl = '/frontend/ckfinder/upload.php?opener=ckeditor&type=images';
+			filebrowserFlashUploadUrl = '/frontend/ckfinder/upload.php?opener=ckeditor&type=flash';});
+            function GetUrlParam( paramName )
+{
+var oRegex = new RegExp( '[\?&]' + paramName + '=([^&]+)', 'i' ) ;
+var oMatch = oRegex.exec( window.top.location.search ) ;
+if ( oMatch && oMatch.length &gt; 1 )
+return decodeURIComponent( oMatch[1] ) ;
+else
+return '' ;
+}
+</script>
 
+<script>
+    var data = CKEDITOR.instances.editor.getData();
 
-
+    // Your code to save "data", usually through Ajax.
+</script>
 
 @yield('script')
 </body>

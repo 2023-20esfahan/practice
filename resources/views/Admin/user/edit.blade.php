@@ -45,12 +45,24 @@
 @enderror
 
   </div>
-  <div class="mb-3">
-  <label for="image" class="form-label"> تصویر  </label>
-  <input type="file" value="{{$user->image}}"class="form-control @error('image') is-invalid @enderror text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" id="image" placeholder="تصویر " name="image">
+<div class="mb-3">
+  <label for="image" class="form-label" value="{{$user->image['thumbnail']}}"> تصویر  </label>
+  <img src="{{ $user->image['thumbnail'] }}" alt="" class="img-fluid  w-20">
+
+  <input type="file"  class="form-control @error('image') is-invalid @enderror text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" id="image" placeholder="تصویر " name="image">
   @error('image')
 <div class="alert alert-danger">{{$message}}</div>
 @enderror
+
+  </div>
+  <div class="mb-3">
+  <label for="editor" class="form-label"> توضیحات  </label>
+  <textarea type="text" class="ckeditor form-control " id="editor"  placeholder="توضیحات " name="editor">
+  {{ $user->description }}
+  </textarea> 
+  </div>
+
+
 
   <div class="mb-3">
 

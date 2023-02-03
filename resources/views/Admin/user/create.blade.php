@@ -50,6 +50,11 @@
 @enderror
 
   </div>
+  <div class="mb-3">
+  <label for="editor" class="form-label"> توضیحات  </label>
+  <textarea type="text" class="ckeditor form-control " id="editor" placeholder="توضیحات " name="editor">
+  </textarea> 
+  </div>
 
 
   <div class="mb-3">

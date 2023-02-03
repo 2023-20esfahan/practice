@@ -41,7 +41,7 @@
       <th >{{$user->id}}</th>
       <td>{{$user->name}}</td>
       <td>{{$user->email}}</td>
-       <td><img src="{{ $user->image[0] }}" alt="" class="img-fluid  w-20"> </td>
+       <td><img src="{{ $user->image['thumbnail'] }}" alt="" class="img-fluid  w-20"> </td>
       <td>
         <div class="d-flex">
       <a class=" m-1 btn btn-success" href="{{route('users.show',$user->id)}}" role="submit">

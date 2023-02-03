@@ -61,11 +61,19 @@ class UserController extends Controller
             $destinationPath = public_path('/uploads');
             $imgFile = Image::make($image->getRealPath());
 
-
-            $array = [100, 200, 300, 400, 500];
-
+            $array = ['thumbnail', 100, 200, 300, 400, 500];
             $images = [];
+
+             $imgFile = Image::make($image->getRealPath());
+
             foreach ($array as $i) {
+                if($i == 'thumbnail'){
+                    $input['file'] = time() . '.' . $image->getClientOriginalExtension();
+                    $imgFile = Image::make($image->getRealPath())->save($destinationPath . '/' . $input['file']);
+                    $url = URL::to('uploads/' . $input['file']);
+                  $images['thumbnail'] = $url;
+                }
+                else{
                 $input['file'] = "$i-" . time() . '.' . $image->getClientOriginalExtension();
                 $imgFile->resize($i, $i, function ($const) {
                     $const->aspectRatio();
@@ -73,18 +81,16 @@ class UserController extends Controller
                 $input['file'] = "$i-" . time() . '.' . $image->getClientOriginalExtension();
                 $url = URL::to('uploads/' . $input['file']);
                 $images[] = $url;
-            }
+            }}
             $data = $images;
         }
-
         $user = new User(['name' => $request->get('name'), 'email' => $request->get('email'),
-            'password' => $request->get('password'), 'image' => $data]);
+            'password' => $request->get('password'), 'image' => $data, 'description'=> $request->get('editor')]);
         try {
             $user->save();
             return redirect()->route('users.index')->with('success', 'کاربر با موفقیت ایجاد شد');
 
         } catch (Exception $exception) {
-            dd($exception);
             $message = $exception->getMessage();
             return redirect()->route('users.index')->with('warning', $message);
 
@@ -155,10 +161,52 @@ class UserController extends Controller
                     $password = $request->password;
                 }
             }
+            $description = $request->description;
+            if($request->file != ''){        
+                $destinationPath = public_path().'/uploads';
+      
+                //code for remove old file
+                if($user->file != ''  && $user->file != null){
+                     $file_old = $path.$user->file;
+                     unlink($file_old);
+                }
+      
+                //upload new file
+                $file = $request->file('image');
+                // $filename = $file->getClientOriginalName();
+                // $file->move($path, $filename);
+      
+                $array = ['thumbnail', 100, 200, 300, 400, 500];
+                $images = [];
+    
+                 $imgFile = Image::make($image->getRealPath());
+    
+                foreach ($array as $i) {
+                    if($i == 'thumbnail'){
+                        $input['file'] = time() . '.' . $file->getClientOriginalExtension();
+                        $imgFile = Image::make($image->getRealPath())->save($destinationPath . '/' . $input['file']);
+                        $url = URL::to('uploads/' . $input['file']);
+                      $images['thumbnail'] = $url;
+                    }
+                    else{
+                    $input['file'] = "$i-" . time() . '.' . $file->getClientOriginalExtension();
+                    $imgFile->resize($i, $i, function ($const) {
+                        $const->aspectRatio();
+                    })->save($destinationPath . '/' . $input['file']);
+                    $input['file'] = "$i-" . time() . '.' . $image->getClientOriginalExtension();
+                    $url = URL::to('uploads/' . $input['file']);
+                    $images[] = $url;
+                }}
+    
+                //for update in table
+           }
+
             $user->update([
                 'name' => $name,
                 'email' => $email,
                 'password' => $password,
+                'image' =>$image,
+                'description' => $description,
             ]);
 
             return redirect()->route('users.index')->with('success', 'کاربر با موفقیت ویرایش  شد');
