@@ -82,8 +82,9 @@ class UserController extends Controller
                 $url = URL::to('uploads/' . $input['file']);
                 $images[] = $url;
             }}
-            $data = $images;
         }
+        $data = $images;
+
         $user = new User(['name' => $request->get('name'), 'email' => $request->get('email'),
             'password' => $request->get('password'), 'image' => $data, 'description'=> $request->get('editor')]);
         try {
@@ -161,10 +162,10 @@ class UserController extends Controller
                     $password = $request->password;
                 }
             }
-            $description = $request->description;
-            if($request->file != ''){        
+            $description = $request->editor;
+            if($request->file('image') != ''){        
                 $destinationPath = public_path().'/uploads';
-      
+            }
                 //code for remove old file
                 if($user->file != ''  && $user->file != null){
                      $file_old = $path.$user->file;
@@ -172,19 +173,19 @@ class UserController extends Controller
                 }
       
                 //upload new file
-                $file = $request->file('image');
+        $file = $request->file('image');
                 // $filename = $file->getClientOriginalName();
                 // $file->move($path, $filename);
       
-                $array = ['thumbnail', 100, 200, 300, 400, 500];
-                $images = [];
-    
-                 $imgFile = Image::make($image->getRealPath());
-    
-                foreach ($array as $i) {
+        $array = ['thumbnail', 100, 200, 300, 400, 500];
+        $images = [];
+        if($file != null){
+            $imgFile = Image::make($file->getRealPath());
+        
+            foreach ($array as $i) {
                     if($i == 'thumbnail'){
                         $input['file'] = time() . '.' . $file->getClientOriginalExtension();
-                        $imgFile = Image::make($image->getRealPath())->save($destinationPath . '/' . $input['file']);
+                        $imgFile = Image::make($file->getRealPath())->save($destinationPath . '/' . $input['file']);
                         $url = URL::to('uploads/' . $input['file']);
                       $images['thumbnail'] = $url;
                     }
@@ -196,22 +197,26 @@ class UserController extends Controller
                     $input['file'] = "$i-" . time() . '.' . $image->getClientOriginalExtension();
                     $url = URL::to('uploads/' . $input['file']);
                     $images[] = $url;
-                }}
+                }
     
                 //for update in table
-           }
+           }}else{
+            $images = $user->image;
 
+           }
+           $data = $images;
             $user->update([
                 'name' => $name,
                 'email' => $email,
                 'password' => $password,
-                'image' =>$image,
+                'image' =>$data,
                 'description' => $description,
             ]);
 
             return redirect()->route('users.index')->with('success', 'کاربر با موفقیت ویرایش  شد');
 
         } catch (Exception $exception) {
+            dd($exception->getMessage());
             return redirect()->route('users.edit')->with('warning', 'ویرایش اطلاعات موفقیت امیز نبود. دوباره سعی کنید   ');
 
         }

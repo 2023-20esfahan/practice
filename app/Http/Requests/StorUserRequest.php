@@ -37,7 +37,7 @@ class StorUserRequest extends FormRequest
             'email' => ['required'],
             'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(),],
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-
+            'description' => ['nullable'],
 
         ];
     }
