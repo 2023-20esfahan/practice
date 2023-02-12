@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use App\Services\UserService;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -21,14 +22,18 @@ use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
+
+    public function __construct(protected UserService $userService)
+    {
+    }
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
-    public function index()
+    public function index(): View|Factory|Application
     {
-        $users = User::all();
+        $users = $this->userService->getUsers();
         return view('Admin.user.index')->with('users', $users);
     }
 
@@ -50,6 +55,9 @@ class UserController extends Controller
      */
     public function store(StorUserRequest $request, User $user)
     {
+        //همه اینا باید ببری تو سرویس میخام یجوری اینجارو تمیز کنی ک کیف کنم یعنی چی ینی درهم برهم کد نزنی هر چیزی رو درست با کامنت قشنگ مشخص کن
+        //مثلا برای این قسمت باید ی فانکشنی داشته باشی ک بهش فایل بدی فقط بیاد آپلود برات انجام بده اصول سالید رعایت کن ینی هر متد باید یک کار رو انجام بدن من تو این قسمت کامنت کلی گذاشتم استارت بزن سوال داشتی بپرس حتما
+
         $validated = $request->validated();
 
         if ($request->file('image') == null) {
