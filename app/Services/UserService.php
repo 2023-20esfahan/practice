@@ -1,8 +1,8 @@
 <?php
 /**
- * UserController.php
+ * UserService.php
  * @author Abbass Mortazavi <abbassmortazavi@gmail.com | Abbass Mortazavi>
- * @copyright Copyright &copy; from pakdaman
+ * @copyright Copyright &copy; from practice
  * @version 1.0.0
  * @date 2022/12/04 18:56
  */
@@ -11,8 +11,7 @@
 namespace App\Services;
 
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserService
 {
@@ -21,55 +20,11 @@ class UserService
     }
 
     /**
-     * @param array $attributes
-     * @return JsonResponse|array
+     * @return Collection|array
      */
-    public function registerUser(array $attributes): JsonResponse|array
+    public function getUsers(): Collection|array
     {
-        $attributes['password'] = bcrypt($attributes['password']);
-        $check = $this->checkUser($attributes['email']);
-        if ($check) {
-            return response()->json([
-                'message' => "User Exist!!",
-                'error' => true
-            ]);
-        }else{
-            $user = $this->userQuery->query()->create($attributes);
-            $data['token'] = $user->createToken('MyApp')->plainTextToken;
-            $data['name'] = $user->name;
-            $data['message'] = "User Register SuccessFully!";
-            return $data;
-        }
-
+        return $this->userQuery->query()->get();
     }
 
-    /**
-     * @param $email
-     * @return bool
-     */
-    public function checkUser($email): bool
-    {
-        return $this->userQuery->query()->where('email', $email)->exists();
-
-    }
-
-    public function login(array $attributes)
-    {
-        if(Auth::attempt(['email' => $attributes['email'], 'password' => $attributes['password']])){
-            $user = Auth::user();
-            $data['token'] =  $user->createToken('MyApp')->plainTextToken;
-            $data['name'] =  $user->name;
-
-            return response()->json([
-                'message' => "Login SuccessFully!!",
-                'data' => $data
-            ]);
-        }
-        else{
-            return response()->json([
-                'message' => "Unauthorised",
-                'error' => true
-            ]);
-        }
-    }
 }
