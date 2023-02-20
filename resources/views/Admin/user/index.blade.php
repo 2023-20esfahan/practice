@@ -44,7 +44,7 @@
        <td><img src="{{ $user->image[0] }}" alt="" class="img-fluid  w-20"> </td>
       <td>
         <div class="d-flex">
-      <a class=" m-1 btn btn-success" href="{{route('users.show',$user->id)}}" role="submit">
+      <a class=" m-1 btn btn-success" href="{{route('users.show',$user)}}" role="submit">
                                         مشاهده
                                     </a>
                                     <form action="{{ route('users.destroy', $user) }}" method="POST">

@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\File;
 class UserController extends Controller
 {
 
-    public function __construct(protected UserService $userService, protected UploadService $uploadService)
+    public function __construct(protected User $user, protected UserService $userService, protected UploadService $uploadService)
     {
     }
     /**
@@ -56,15 +56,8 @@ class UserController extends Controller
      */
     public function store(StorUserRequest $request, UserService $userService, UploadService $uploadService)
     {
-        $validated = $request->validated();
 
-        $directory = 'users.index';
-        $messages = 'کاربر با موفقیت ایجاد شد';    
-        $images = $this->uploadService->getImage($request);
-
-        $user = new UserService(['name' => $request->get('name'), 'email' => $request->get('email'),
-        'password' => $request->get('password'), 'image' => $images]);
-        $this->uploadService->MessageafterCreating($directory, $messages);
+        $this->userService->store($request);
 
     }
 
@@ -75,10 +68,10 @@ class UserController extends Controller
      * @param User $user
      * @return Application|Factory|View
      */
-    public function show(Request $request, UserService $userService): Application|Factory|View
+    public function show(Request $request, User $user) 
     {
-        return view('Admin.user.show')->with('user', $userService);
-
+        return view('Admin.user.show', compact('user'));
+        
     }
 
     /**

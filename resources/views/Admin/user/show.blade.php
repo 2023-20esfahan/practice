@@ -30,7 +30,7 @@
   <tbody>
 
     <tr>
-      <th >{{$user->id}}</th>
+      <th >{{$user->id}} </th>
       <td>{{$user->name}}</td>
       <td>{{$user->email}}</td>
       <td><img src="{{ Storage::url($user->image) }}" alt="" class="img-fluid  w-20"> </td>

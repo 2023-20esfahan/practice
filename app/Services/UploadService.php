@@ -30,7 +30,7 @@ class UploadService
     {
 
         if ($request->file('image') == null) {
-            $data = "";
+            $data = [""];
 
         } else {
             $image = $request->file('image');
@@ -57,20 +57,6 @@ class UploadService
 
     }
     // This function gives the related messages after creating :
-    public function MessageafterCreating($directory, $messages){
-    
-try {
-    $user->save();
-    return redirect()->route($directory)->with('success', 'کاربر با موفقیت ایجاد شد');
-
-} catch (Exception $exception) {
-    $message = $exception->getMessage();
-    return redirect()->route('users.index')->with('warning', $message);
-
-}
-
-
-}
 
     
 }
